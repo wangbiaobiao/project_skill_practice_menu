@@ -29,30 +29,41 @@ static tDataNode head[] =
 
 };
 
+tDataNode * FindCmd(tDataNode * head, char * cmd)
+{
+	if(head == NULL || cmd == NULL)
+	{
+		return NULL;
+	}
+	tDataNode *p = head;
+	while(p != NULL)
+	{
+		if(strcmp(p->cmd, cmd) == 0)
+		{
+			return p;
+		}
+		p = p->next;
+	}
+	return NULL;
+}
+
 int main()
 {
 	char cmd[CMD_NUMBER];
-	tDataNode *p = head;
+	tDataNode *p;
 	printf("please input your cmd\n");
 	while(1)
 	{
-		tDataNode *p = head;
 		scanf("%s",cmd);
-		while(p != NULL)
+		p = FindCmd(head, cmd);
+		if(p == NULL)
 		{
-			if(strcmp(p->cmd,cmd) == 0)
-			{
-				if(p->handler != NULL)
-				{
-					p->handler();
-				}
-				break;
-			}
-			p = p->next;
-			if(p == NULL)
-			{
-				printf("this isn't a cmd\n");
-			}
+			printf("this isn't a cmd\n");
+			continue;
+		}
+		if(p->handler != NULL)
+		{
+			p->handler();
 		}
 	}
 	return 0;
